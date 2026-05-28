@@ -416,13 +416,10 @@ static MemoryContext MXactContext = NULL;
 #define debug_elog6(a,b,c,d,e,f)
 #endif
 
-<<<<<<< HEAD
 /* POLAR: Check whether multixact local file cache is enabled */
 #define POLAR_ENABLE_MULTIXACT_LOCAL_CACHE() \
 	(polar_multixact_max_local_cache_segments > 0 && polar_enable_shared_storage_mode)
 
-/* hack to deal with WAL generated with older minor versions */
-=======
 /*
  * Hack to deal with WAL generated with older minor versions.
  *
@@ -434,7 +431,6 @@ static MemoryContext MXactContext = NULL;
  * seen a XLOG_MULTIXACT_ZERO_OFF_PAGE record for the page yet.
  */
 static int64 last_initialized_offsets_page = -1;
->>>>>>> REL_17_10
 static int64 pre_initialized_offsets_page = -1;
 
 /* internal MultiXactId management */

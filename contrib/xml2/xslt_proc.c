@@ -180,8 +180,8 @@ xslt_process(PG_FUNCTION_ARGS)
 		PG_RETURN_NULL();
 
 	/*
-	 * If an empty string has been returned, resstr would be NULL. In
-	 * this case, assume that the result is an empty string.
+	 * If an empty string has been returned, resstr would be NULL. In this
+	 * case, assume that the result is an empty string.
 	 */
 	if (reslen == 0)
 		result = cstring_to_text("");

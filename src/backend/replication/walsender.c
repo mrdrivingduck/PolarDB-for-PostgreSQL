@@ -2615,14 +2615,10 @@ ProcessStandbyReplyMessage(void)
 	TimestampTz now;
 	TimestampTz replyTime;
 
-<<<<<<< HEAD
-	static bool fullyAppliedLastTime = false;
 	XLogRecPtr	polar_bg_replay_lsn = InvalidXLogRecPtr;
-=======
 	static XLogRecPtr prevWritePtr = InvalidXLogRecPtr;
 	static XLogRecPtr prevFlushPtr = InvalidXLogRecPtr;
 	static XLogRecPtr prevApplyPtr = InvalidXLogRecPtr;
->>>>>>> REL_17_10
 
 	/* the caller already consumed the msgtype byte */
 	writePtr = pq_getmsgint64(&reply_message);

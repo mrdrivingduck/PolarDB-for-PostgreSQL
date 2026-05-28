@@ -1192,17 +1192,12 @@ slotsync_reread_config(void)
 		}
 	}
 
-<<<<<<< HEAD
-	if (conninfo_changed ||
-		primary_slotname_changed ||
-		(old_hot_standby_feedback != POLAR_ENABLE_FEEDBACK()))
-=======
 	/*
 	 * If we have reached here with a parameter change, we must be running in
 	 * SQL function, emit error in such a case.
 	 */
-	if (parameter_changed)
->>>>>>> REL_17_10
+	if (parameter_changed ||
+		(old_hot_standby_feedback != POLAR_ENABLE_FEEDBACK()))
 	{
 		Assert(!is_slotsync_worker);
 		ereport(ERROR,

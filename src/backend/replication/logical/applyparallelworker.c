@@ -813,10 +813,10 @@ LogicalParallelApplyLoop(shm_mq_handle *mqh)
 					ResetLatch(MyLatch);
 
 				/*
-				 * Force stats reporting to avoid long delays. There can be long
-				 * idle gaps before the leader assigns the next transaction, and
-				 * the only opportunity to report stats during such gaps is
-				 * here.
+				 * Force stats reporting to avoid long delays. There can be
+				 * long idle gaps before the leader assigns the next
+				 * transaction, and the only opportunity to report stats
+				 * during such gaps is here.
 				 */
 				if ((rc & WL_TIMEOUT) && !IsTransactionState())
 					pgstat_report_stat(true);
