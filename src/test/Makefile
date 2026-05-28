@@ -12,9 +12,13 @@ subdir = src/test
 top_builddir = ../..
 include $(top_builddir)/src/Makefile.global
 
+<<<<<<< HEAD
 # POLAR: run slow modules/regress first, it will make parallel precheck faster
 # POLAR: split polar_pl polar_consistency tests alone
 SUBDIRS = modules regress perl isolation authentication recovery subscription
+=======
+SUBDIRS = perl postmaster regress isolation modules authentication recovery subscription
+>>>>>>> REL_17_10
 
 ifeq ($(with_icu),yes)
 SUBDIRS += icu
