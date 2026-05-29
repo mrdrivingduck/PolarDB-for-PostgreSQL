@@ -1297,6 +1297,9 @@ repalloc_extended(void *pointer, Size size, int flags)
 		  AllocSizeIsValid(size)))
 		elog(ERROR, "invalid memory alloc request size %zu", size);
 
+	/* POLAR: Enable check interrupt when allocating memory. */
+	POLAR_INTERRUPTS_FOR_ALLOC();
+
 	AssertNotInCriticalSection(context);
 
 	/* isReset must be false already */
@@ -1494,39 +1497,8 @@ MemoryContextAllocHuge(MemoryContext context, Size size)
 void *
 repalloc_huge(void *pointer, Size size)
 {
-<<<<<<< HEAD
-	MemoryContext context = GetMemoryChunkContext(pointer);
-	void	   *ret;
-
-	if (!AllocHugeSizeIsValid(size))
-		elog(ERROR, "invalid memory alloc request size %zu", size);
-
-	/* POLAR: Enable check interrupt when allocating memory. */
-	POLAR_INTERRUPTS_FOR_ALLOC();
-
-	AssertNotInCriticalSection(context);
-
-	/* isReset must be false already */
-	Assert(!context->isReset);
-
-	ret = context->methods->realloc(context, pointer, size);
-	if (unlikely(ret == NULL))
-	{
-		MemoryContextStats(TopMemoryContext);
-		ereport(ERROR,
-				(errcode(ERRCODE_OUT_OF_MEMORY),
-				 errmsg("out of memory"),
-				 errdetail("Failed on request of size %zu in memory context \"%s\".",
-						   size, context->name)));
-	}
-
-	VALGRIND_MEMPOOL_CHANGE(context, pointer, ret, size);
-
-	return ret;
-=======
 	/* this one seems not worth its own implementation */
 	return repalloc_extended(pointer, size, MCXT_ALLOC_HUGE);
->>>>>>> REL_15_18
 }
 
 /*
