@@ -181,6 +181,10 @@ POLAR_REPL_MODE		{ return K_POLAR_REPL_MODE; }
 					return IDENT;
 				}
 
+<xd>{xddouble}	{
+					addlitchar('"');
+				}
+
 <xd>{xdinside}  {
 					addlit(yytext, yyleng);
 				}
