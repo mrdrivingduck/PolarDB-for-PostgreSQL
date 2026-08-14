@@ -545,12 +545,12 @@ no warnings qw(redefine);    ## no critic
 sub new
 {
 	my $classname = shift;
-	my $self      = $classname->SUPER::_new(@_);
+	my $self = $classname->SUPER::_new(@_);
 	bless($self, $classname);
 
-	$self->{vcver}           = '18.00';
+	$self->{vcver} = '18.00';
 	$self->{PlatformToolset} = 'v145';
-	$self->{ToolsVersion}    = '18.0';
+	$self->{ToolsVersion} = '18.0';
 
 	return $self;
 }

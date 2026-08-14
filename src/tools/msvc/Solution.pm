@@ -1383,13 +1383,13 @@ no warnings qw(redefine);    ## no critic
 sub new
 {
 	my $classname = shift;
-	my $self      = $classname->SUPER::_new(@_);
+	my $self = $classname->SUPER::_new(@_);
 	bless($self, $classname);
 
-	$self->{solutionFileVersion}        = '12.00';
-	$self->{vcver}                      = '18.00';
-	$self->{visualStudioName}           = 'Visual Studio 2026';
-	$self->{VisualStudioVersion}        = '18.7.11925.98';
+	$self->{solutionFileVersion} = '12.00';
+	$self->{vcver} = '18.00';
+	$self->{visualStudioName} = 'Visual Studio 2026';
+	$self->{VisualStudioVersion} = '18.7.11925.98';
 	$self->{MinimumVisualStudioVersion} = '10.0.40219.1';
 
 	return $self;

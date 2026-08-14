@@ -42,22 +42,8 @@ hash_xlog_init_meta_page(XLogReaderState *record)
 						  xlrec->ffactor, true);
 	page = (Page) BufferGetPage(metabuf);
 	PageSetLSN(page, lsn);
-<<<<<<< HEAD
 	PolarMarkBufferDirty(metabuf, record->ReadRecPtr);
-
-	/*
-	 * Force the on-disk state of init forks to always be in sync with the
-	 * state in shared buffers.  See XLogReadBufferForRedoExtended.  We need
-	 * special handling for init forks as create index operations don't log a
-	 * full page image of the metapage.
-	 */
-	XLogRecGetBlockTag(record, 0, NULL, &forknum, NULL);
-	if (forknum == INIT_FORKNUM)
-		FlushOneBuffer(metabuf);
-=======
-	MarkBufferDirty(metabuf);
 	XLogFlushBufferForRedoIfInit(record, 0, metabuf);
->>>>>>> REL_15_19
 
 	/* all done */
 	UnlockReleaseBuffer(metabuf);
@@ -84,22 +70,8 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 	bitmapbuf = XLogInitBufferForRedo(record, 0);
 	_hash_initbitmapbuffer(bitmapbuf, xlrec->bmsize, true);
 	PageSetLSN(BufferGetPage(bitmapbuf), lsn);
-<<<<<<< HEAD
 	PolarMarkBufferDirty(bitmapbuf, record->ReadRecPtr);
-
-	/*
-	 * Force the on-disk state of init forks to always be in sync with the
-	 * state in shared buffers.  See XLogReadBufferForRedoExtended.  We need
-	 * special handling for init forks as create index operations don't log a
-	 * full page image of the metapage.
-	 */
-	XLogRecGetBlockTag(record, 0, NULL, &forknum, NULL);
-	if (forknum == INIT_FORKNUM)
-		FlushOneBuffer(bitmapbuf);
-=======
-	MarkBufferDirty(bitmapbuf);
 	XLogFlushBufferForRedoIfInit(record, 0, bitmapbuf);
->>>>>>> REL_15_19
 	UnlockReleaseBuffer(bitmapbuf);
 
 	/* add the new bitmap page to the metapage's list of bitmaps */
@@ -119,16 +91,8 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 		metap->hashm_nmaps++;
 
 		PageSetLSN(page, lsn);
-<<<<<<< HEAD
 		PolarMarkBufferDirty(metabuf, record->ReadRecPtr);
-
-		XLogRecGetBlockTag(record, 1, NULL, &forknum, NULL);
-		if (forknum == INIT_FORKNUM)
-			FlushOneBuffer(metabuf);
-=======
-		MarkBufferDirty(metabuf);
 		XLogFlushBufferForRedoIfInit(record, 1, metabuf);
->>>>>>> REL_15_19
 	}
 	if (BufferIsValid(metabuf))
 		UnlockReleaseBuffer(metabuf);

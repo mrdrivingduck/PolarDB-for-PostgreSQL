@@ -126,7 +126,7 @@ ok( $stubble->poll_query_until(
 # Verify no errors occurred in stubble.
 my $stubble_loglines =
   PostgreSQL::Test::Utils::slurp_file($stubble->logfile, $stubble_log_offset);
-ok( $stubble_loglines !~ m/ERROR/, 'no errors in stubble log');
+ok($stubble_loglines !~ m/ERROR/, 'no errors in stubble log');
 
 # Now restore samurai's streaming from praline so it can catch up
 $samurai->enable_streaming($praline);
@@ -155,10 +155,11 @@ done_testing();
 
 # Backported method
 package PostgreSQL::Test::Cluster;
+
 sub wait_for_replay_catchup
 {
-   my ($self, $standby_name, $node) = @_;
-   $node = defined($node) ? $node : $self;
+	my ($self, $standby_name, $node) = @_;
+	$node = defined($node) ? $node : $self;
 
-   $self->wait_for_catchup($standby_name, 'replay', $node->lsn('flush'));
+	$self->wait_for_catchup($standby_name, 'replay', $node->lsn('flush'));
 }

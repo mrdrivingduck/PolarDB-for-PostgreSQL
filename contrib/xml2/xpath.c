@@ -157,8 +157,8 @@ pgxmlNodeSetToText(xmlNodeSetPtr nodeset,
 				}
 
 				/*
-				 * XML_NAMESPACE_DECL nodes are xmlNs structs, that cannot
-				 * be processed by xmlNodeDump().
+				 * XML_NAMESPACE_DECL nodes are xmlNs structs, that cannot be
+				 * processed by xmlNodeDump().
 				 */
 				if (node->type == XML_NAMESPACE_DECL)
 					xmlBufferWriteCHAR(buf, xmlXPathCastNodeToString(node));

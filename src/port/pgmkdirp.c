@@ -121,12 +121,7 @@ pg_mkdir_p(char *path, int omode)
 		if (last)
 			(void) umask(oumask);
 
-<<<<<<< HEAD
-		/* check for pre-existing directory */
-		if (polar_stat(path, &sb) == 0)
-=======
-		if (mkdir(path, last ? omode : S_IRWXU | S_IRWXG | S_IRWXO) < 0)
->>>>>>> REL_15_19
+		if (polar_mkdir(path, last ? omode : S_IRWXU | S_IRWXG | S_IRWXO) < 0)
 		{
 			/*
 			 * If we got EEXIST because there's already a directory there,
@@ -137,7 +132,7 @@ pg_mkdir_p(char *path, int omode)
 			struct stat sb;
 
 			if (save_errno != EEXIST ||
-				stat(path, &sb) != 0 ||
+				polar_stat(path, &sb) != 0 ||
 				!S_ISDIR(sb.st_mode))
 			{
 				/* Don't let stat replace mkdir's errno */
@@ -165,15 +160,6 @@ pg_mkdir_p(char *path, int omode)
 			}
 #endif							/* WIN32 */
 		}
-<<<<<<< HEAD
-		else if (polar_mkdir(path, last ? omode : S_IRWXU | S_IRWXG | S_IRWXO) < 0)
-		{
-			retval = -1;
-			break;
-		}
-=======
-
->>>>>>> REL_15_19
 		if (!last)
 			*p = '/';
 	}

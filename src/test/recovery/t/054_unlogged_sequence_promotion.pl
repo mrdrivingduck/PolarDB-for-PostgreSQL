@@ -28,7 +28,7 @@ $node_primary->wait_for_catchup($node_standby);
 
 $node_standby->promote;
 $node_standby->poll_query_until('postgres', "SELECT NOT pg_is_in_recovery()")
-	or die "Timed out waiting for promotion";
+  or die "Timed out waiting for promotion";
 
 is($node_standby->safe_psql('postgres', "SELECT nextval('ulseq')"),
 	1, 'unlogged sequence can be read after standby promotion');

@@ -2133,9 +2133,9 @@ getJsonPathVariable(JsonPathExecContext *cxt, JsonPathItem *variable,
 
 	if (!vars)
 		ereport(ERROR,
-			(errcode(ERRCODE_UNDEFINED_OBJECT),
-			 errmsg("could not find jsonpath variable \"%s\"",
-					pnstrdup(varName, varNameLength))));
+				(errcode(ERRCODE_UNDEFINED_OBJECT),
+				 errmsg("could not find jsonpath variable \"%s\"",
+						pnstrdup(varName, varNameLength))));
 
 	tmp.type = jbvString;
 	tmp.val.string.val = varName;

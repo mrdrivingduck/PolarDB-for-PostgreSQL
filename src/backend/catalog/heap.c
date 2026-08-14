@@ -2461,9 +2461,9 @@ AddRelationNewConstraints(Relation rel,
 								  RelationGetRelationName(rel));
 
 			/*
-			 * The below call to StoreRelCheck() calls CreateConstraintEntry(),
-			 * which adds the dependencies on types.  We are responsible for
-			 * checking USAGE.
+			 * The below call to StoreRelCheck() calls
+			 * CreateConstraintEntry(), which adds the dependencies on types.
+			 * We are responsible for checking USAGE.
 			 */
 			if (!is_internal)
 				CheckUsageOnTypesInSingleRelExpr(expr, RelationGetRelid(rel), GetUserId());
