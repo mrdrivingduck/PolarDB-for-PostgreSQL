@@ -29,7 +29,6 @@ hash_xlog_init_meta_page(XLogReaderState *record)
 	XLogRecPtr	lsn = record->EndRecPtr;
 	Page		page;
 	Buffer		metabuf;
-	ForkNumber	forknum;
 
 	xl_hash_init_meta_page *xlrec = (xl_hash_init_meta_page *) XLogRecGetData(record);
 
@@ -40,6 +39,7 @@ hash_xlog_init_meta_page(XLogReaderState *record)
 						  xlrec->ffactor, true);
 	page = (Page) BufferGetPage(metabuf);
 	PageSetLSN(page, lsn);
+<<<<<<< HEAD
 	PolarMarkBufferDirty(metabuf, record->ReadRecPtr);
 
 	/*
@@ -51,6 +51,10 @@ hash_xlog_init_meta_page(XLogReaderState *record)
 	XLogRecGetBlockTag(record, 0, NULL, &forknum, NULL);
 	if (forknum == INIT_FORKNUM)
 		FlushOneBuffer(metabuf);
+=======
+	MarkBufferDirty(metabuf);
+	XLogFlushBufferForRedoIfInit(record, 0, metabuf);
+>>>>>>> REL_17_11
 
 	/* all done */
 	UnlockReleaseBuffer(metabuf);
@@ -68,7 +72,6 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 	Page		page;
 	HashMetaPage metap;
 	uint32		num_buckets;
-	ForkNumber	forknum;
 
 	xl_hash_init_bitmap_page *xlrec = (xl_hash_init_bitmap_page *) XLogRecGetData(record);
 
@@ -78,6 +81,7 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 	bitmapbuf = XLogInitBufferForRedo(record, 0);
 	_hash_initbitmapbuffer(bitmapbuf, xlrec->bmsize, true);
 	PageSetLSN(BufferGetPage(bitmapbuf), lsn);
+<<<<<<< HEAD
 	PolarMarkBufferDirty(bitmapbuf, record->ReadRecPtr);
 
 	/*
@@ -89,6 +93,10 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 	XLogRecGetBlockTag(record, 0, NULL, &forknum, NULL);
 	if (forknum == INIT_FORKNUM)
 		FlushOneBuffer(bitmapbuf);
+=======
+	MarkBufferDirty(bitmapbuf);
+	XLogFlushBufferForRedoIfInit(record, 0, bitmapbuf);
+>>>>>>> REL_17_11
 	UnlockReleaseBuffer(bitmapbuf);
 
 	/* add the new bitmap page to the metapage's list of bitmaps */
@@ -108,11 +116,16 @@ hash_xlog_init_bitmap_page(XLogReaderState *record)
 		metap->hashm_nmaps++;
 
 		PageSetLSN(page, lsn);
+<<<<<<< HEAD
 		PolarMarkBufferDirty(metabuf, record->ReadRecPtr);
 
 		XLogRecGetBlockTag(record, 1, NULL, &forknum, NULL);
 		if (forknum == INIT_FORKNUM)
 			FlushOneBuffer(metabuf);
+=======
+		MarkBufferDirty(metabuf);
+		XLogFlushBufferForRedoIfInit(record, 1, metabuf);
+>>>>>>> REL_17_11
 	}
 	if (BufferIsValid(metabuf))
 		UnlockReleaseBuffer(metabuf);
