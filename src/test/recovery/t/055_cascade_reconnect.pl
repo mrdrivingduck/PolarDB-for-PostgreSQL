@@ -120,7 +120,7 @@ $stubble->wait_for_event('walreceiver', 'WalReceiverUpstreamCatchup');
 # Verify no errors occurred in stubble.
 my $stubble_loglines =
   PostgreSQL::Test::Utils::slurp_file($stubble->logfile, $stubble_log_offset);
-ok( $stubble_loglines !~ m/ERROR/, 'no errors in stubble log');
+ok($stubble_loglines !~ m/ERROR/, 'no errors in stubble log');
 
 # Now restore samurai's streaming from praline so it can catch up
 $samurai->enable_streaming($praline);

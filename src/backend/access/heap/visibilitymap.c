@@ -136,7 +136,7 @@ visibilitymap_clear(Relation rel, BlockNumber heapBlk, Buffer vmbuf, uint8 flags
 
 	LockBuffer(vmbuf, BUFFER_LOCK_EXCLUSIVE);
 
-	cleared = visibilitymap_clear_locked(rel, heapBlk, vmbuf, flags);
+	cleared = visibilitymap_clear_locked(rel, heapBlk, vmbuf, flags, polar_record);
 
 	LockBuffer(vmbuf, BUFFER_LOCK_UNLOCK);
 
@@ -151,7 +151,8 @@ visibilitymap_clear(Relation rel, BlockNumber heapBlk, Buffer vmbuf, uint8 flags
  * Returns true if any bits were actually cleared, false otherwise.
  */
 bool
-visibilitymap_clear_locked(Relation rel, BlockNumber heapBlk, Buffer vmbuf, uint8 flags)
+visibilitymap_clear_locked(Relation rel, BlockNumber heapBlk, Buffer vmbuf, uint8 flags,
+						   XLogReaderState *polar_record)
 {
 	BlockNumber mapBlock = HEAPBLK_TO_MAPBLOCK(heapBlk);
 	int			mapByte = HEAPBLK_TO_MAPBYTE(heapBlk);

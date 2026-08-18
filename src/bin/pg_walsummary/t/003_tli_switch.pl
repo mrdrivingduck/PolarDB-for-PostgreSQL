@@ -67,8 +67,8 @@ $node1->wait_for_replay_catchup($node2);
 
 # Record the WAL insert LSN on node1, so we can later verify that summarization
 # on node3 advances past this point.
-my $node1_final_lsn = $node1->safe_psql('postgres',
-	'SELECT pg_current_wal_insert_lsn()');
+my $node1_final_lsn =
+  $node1->safe_psql('postgres', 'SELECT pg_current_wal_insert_lsn()');
 
 # Promote node2. This creates a timeline switch that node3 must follow.
 $node2->promote;
@@ -83,7 +83,7 @@ $node2->poll_query_until('postgres', "SELECT pg_is_in_recovery() = 'f';");
 # timeline 1. We do a CHECKPOINT here to make sure that the summarizer tries
 # to progress.
 my $node2_switch_lsn =
-	$node2->safe_psql('postgres', 'SELECT pg_switch_wal()');
+  $node2->safe_psql('postgres', 'SELECT pg_switch_wal()');
 $node2->safe_psql('postgres', 'CHECKPOINT');
 
 # Wait until replay has reached TLI 2 on node3, and then start the WAL
@@ -100,7 +100,7 @@ $node2->safe_psql('postgres', 'CHECKPOINT');
 # so that we get useful debug messages if there's any problem.
 $node3->poll_query_until('postgres',
 	"SELECT pg_last_wal_replay_lsn() >= '$node2_switch_lsn'::pg_lsn")
-	or die "TLI 2 not reached on node3";
+  or die "TLI 2 not reached on node3";
 $node3->append_conf('postgresql.conf', <<EOM);
 summarize_wal = on
 log_min_messages = debug1
@@ -130,7 +130,8 @@ SELECT tli, start_lsn, end_lsn FROM pg_available_wal_summaries()
 WHERE tli = 2 AND start_lsn >= '$node1_final_lsn' ORDER BY start_lsn
 EOM
 my @summary_lines = split(/\n/, $summaries);
-ok(@summary_lines > 0, "at least one summary from LSN $node1_final_lsn or later");
+ok(@summary_lines > 0,
+	"at least one summary from LSN $node1_final_lsn or later");
 
 # We expect the new summaries to be empty, because we have not actually touched
 # any block data (and we disabled autovacuum from the start).

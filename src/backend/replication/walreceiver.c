@@ -400,8 +400,8 @@ WalReceiverMain(char *startup_data, size_t startup_data_len)
 
 		/*
 		 * Check that we're connected to a valid server using the
-		 * IDENTIFY_SYSTEM replication command.  Reset the global LSN
-		 * first so we don't act on a stale value if the call fails.
+		 * IDENTIFY_SYSTEM replication command.  Reset the global LSN first so
+		 * we don't act on a stale value if the call fails.
 		 */
 		WalRcvIdentifySystemLsn = InvalidXLogRecPtr;
 		primary_sysid = walrcv_identify_system(wrconn, &primaryTLI);

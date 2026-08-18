@@ -69,7 +69,8 @@ my @tests = (
 				before => 'id = 2',
 				after => 'id = 2',
 				same => 0,
-				desc => 'large update moves the tuple to a different heap page',
+				desc =>
+				  'large update moves the tuple to a different heap page',
 			},
 		],
 		visible_op => '<',
@@ -92,14 +93,14 @@ my @tests = (
 		modify => q{COPY vm_copy_test FROM PROGRAM 'echo 42'},
 		visible_op => '<',
 		frozen_op => '<',
-	},
-);
+	},);
 
 sub get_vm_summary
 {
 	my ($node, $table) = @_;
 	my $result = $node->safe_psql('postgres',
-		"SELECT all_visible, all_frozen FROM pg_visibility_map_summary('$table')");
+		"SELECT all_visible, all_frozen FROM pg_visibility_map_summary('$table')"
+	);
 	my @vals = split(/\|/, $result);
 	return @vals;
 }
@@ -183,8 +184,8 @@ my $full_path = $primary->backup_dir . "/$full_name";
 $primary->command_ok(
 	[
 		'pg_basebackup', '--no-sync',
-		'--pgdata'      => $full_path,
-		'--checkpoint'  => 'fast',
+		'--pgdata' => $full_path,
+		'--checkpoint' => 'fast',
 	],
 	'full backup');
 
@@ -228,8 +229,8 @@ my $incr_path = $primary->backup_dir . "/$incr_name";
 $primary->command_ok(
 	[
 		'pg_basebackup', '--no-sync',
-		'--pgdata'      => $incr_path,
-		'--checkpoint'  => 'fast',
+		'--pgdata' => $incr_path,
+		'--checkpoint' => 'fast',
 		'--incremental' => $full_path . '/backup_manifest',
 	],
 	'incremental backup');
@@ -237,14 +238,16 @@ $primary->command_ok(
 # Start a server from a combined backup composed of the incremental and full
 # backup.
 my $restored = PostgreSQL::Test::Cluster->new('restored');
-$restored->init_from_backup($primary, $incr_name,
+$restored->init_from_backup(
+	$primary, $incr_name,
 	combine_with_prior => [$full_name],
-	combine_mode       => $mode);
+	combine_mode => $mode);
 $restored->append_conf('postgresql.conf', <<EOF);
 autovacuum = off
 EOF
 $restored->start;
-$restored->safe_psql('postgres', q{CREATE EXTENSION IF NOT EXISTS pg_visibility});
+$restored->safe_psql('postgres',
+	q{CREATE EXTENSION IF NOT EXISTS pg_visibility});
 
 # Confirm that the restored server's visibility map matches the original server
 foreach my $test (@tests)

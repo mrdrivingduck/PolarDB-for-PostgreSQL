@@ -31,7 +31,6 @@
 #define VM_ALL_FROZEN(r, b, v) \
 	((visibilitymap_get_status((r), (b), (v)) & VISIBILITYMAP_ALL_FROZEN) != 0)
 
-<<<<<<< HEAD
 /* POLAR */
 #define POLAR_REPLICA_ENABLE_VISIBILITYMAP() \
 	(polar_is_replica() && polar_hot_standby_enable_vm && \
@@ -43,10 +42,9 @@
 	(polar_is_primary() || polar_is_standby() || POLAR_REPLICA_ENABLE_VISIBILITYMAP())
 /* POLAR end */
 
-=======
 extern bool visibilitymap_clear_locked(Relation rel, BlockNumber heapBlk,
-									   Buffer vmbuf, uint8 flags);
->>>>>>> REL_17_11
+									   Buffer vmbuf, uint8 flags,
+									   XLogReaderState *polar_record);
 extern bool visibilitymap_clear(Relation rel, BlockNumber heapBlk,
 								Buffer vmbuf, uint8 flags,
 								XLogReaderState *polar_record);
