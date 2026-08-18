@@ -1898,6 +1898,7 @@ seq_redo(XLogReaderState *record)
 
 	memcpy(page, localpage, BufferGetPageSize(buffer));
 	PolarMarkBufferDirty(buffer, record->ReadRecPtr);
+	XLogFlushBufferForRedoIfInit(record, 0, buffer);
 	UnlockReleaseBuffer(buffer);
 
 	pfree(localpage);
